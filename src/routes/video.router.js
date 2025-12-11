@@ -3,9 +3,11 @@ import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 import {
+    deleteVideo,
      getAllVideos,
      getvideoById,
      publishAVideo, 
+     publishToggle, 
      updateVideo
     } from "../controllers/video.controller.js";
 
@@ -14,6 +16,8 @@ import {upload} from "../middlewares/multure.middleware.js"
 const router = Router()
 
 router.use(verifyJWT)
+
+// ======================================================================================
 
 router.route("/")
 .get(getAllVideos)
@@ -30,9 +34,15 @@ router.route("/")
     publishAVideo
 )
 
+// ======================================================================================
+
 router.route("/:videoId")
 .get(getvideoById)
-.post(upload.single("thumbnail"),updateVideo)
+.patch(upload.single("thumbnail"),updateVideo)
+.delete(deleteVideo)
 
+// ======================================================================================
+
+router.route("/toggle/:videoId").patch(publishToggle)
 
 export default router

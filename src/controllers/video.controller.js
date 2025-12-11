@@ -5,6 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import {User} from "../models/user.models.js"
 import {Video} from "../models/video.models.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
+import {v2 as cloudinary} from 'cloudinary'
 
 const getAllVideos = asyncHandler(async(req,res)=>{
     const {
@@ -233,9 +234,74 @@ const updateVideo = asyncHandler(async(req,res)=>{
     )
 })
 
+const deleteVideo = asyncHandler(async(req,res)=>{
+    const {videoId} = req.params
+
+    if(!videoId){
+        throw new ApiError(400 , "No video Id available")
+    }
+
+    const video = await Video.findById(videoId)
+    if(!video){
+        throw new ApiError(404 , "No such video exists")
+    }
+
+    if(!req.user || !req.user._id){
+        throw new ApiError(400 , "Authorization Error")
+    }
+
+    if(video.owner.toString()!=req.user._id.toString()){
+        throw new ApiError(403 , "You cannot delete this video")
+    }
+
+    await Video.findByIdAndDelete(videoId)
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 , "Video deleted successfully")
+    )
+})
+
+const publishToggle = asyncHandler(async(req,res)=>{
+    const {videoId} = req.params
+
+    if(!videoId){
+        throw new ApiError(400 , "No video id obtained")
+    }
+
+    const video = await Video.findById(videoId)
+    if(!video){
+        throw new ApiError(404 , "No such video found")
+    }
+
+    if(!req.user || !req.user._id){
+        throw new ApiError(400 , "Authorization error")
+    }
+
+    if(video.owner.toString()!==req.user._id.toString()){
+        throw new ApiError(403 , "You are not authorized to take this action")
+    }
+
+    video.isPublished=!video.isPublished
+    const update = await video.save()
+
+    if(!update){
+        throw new ApiError(500 , "Something went wrong")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 ,{PublishStatus:update.isPublished} , "Action taken succefully")
+    )
+})
+
 export {
     getAllVideos,
     publishAVideo,
     getvideoById,
-    updateVideo
+    updateVideo,
+    deleteVideo,
+    publishToggle
 }

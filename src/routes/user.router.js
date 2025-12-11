@@ -30,23 +30,43 @@ router.route("/register").post(
     ]),registerUser
 )
 
+// ======================================================================================
+
 router.route("/login").post(LoginUser)
+
+// ======================================================================================
 
 router.route("/logout").post(verifyJWT,LogoutUser)
 
+// ======================================================================================
+
 router.route("/refresh-token").post(verifyJWT,RefreshAccessToken)
+
+// ======================================================================================
 
 router.route("/change-password").post(verifyJWT,changeCurrentPassword)
 
+// ======================================================================================
+
 router.route("/currentUser").post(verifyJWT,currentUser)
+
+// ======================================================================================
 
 router.route("/change-details").post(verifyJWT,updateAccountDetails)
 
+// ======================================================================================
+
 router.route("/updateavatar").post(verifyJWT,upload.single("avatar"),updateAvatar)
+
+// ======================================================================================
 
 router.route("/updatecoverImage").post(verifyJWT,upload.single("coverImage"),updatecoverImage)
 
+// ======================================================================================
+
 router.route("/c/:username").get(verifyJWT,UserProfile)
+
+// ======================================================================================
 
 router.route("/get-history").get(verifyJWT,getwatchHistory)
 
