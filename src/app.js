@@ -21,5 +21,9 @@ import userRouter from "./routes/user.router.js"
 
 app.use("/api/v1/users",userRouter)
 
+import videoRouter from "./routes/video.router.js"
+
+app.use("/api/v1/video",videoRouter)
+
 
 export {app}
