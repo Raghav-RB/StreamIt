@@ -21,9 +21,16 @@ import userRouter from "./routes/user.router.js"
 
 app.use("/api/v1/users",userRouter)
 
+// ======================================================================================
+
 import videoRouter from "./routes/video.router.js"
 
 app.use("/api/v1/video",videoRouter)
 
+// ======================================================================================
+
+import healthRouter from "./routes/healthcheck.router.js"
+
+app.use("/api/v1/health-check",healthRouter)
 
 export {app}
