@@ -39,4 +39,10 @@ import tweetRouter from "./routes/tweet.route.js"
 
 app.use("/api/v1/tweet",tweetRouter)
 
+// ======================================================================================
+
+import subsRouter from "./routes/subscription.route.js"
+
+app.use("api/vi/subscription",subsRouter)
+
 export {app}
