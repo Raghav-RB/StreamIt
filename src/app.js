@@ -33,4 +33,10 @@ import healthRouter from "./routes/healthcheck.router.js"
 
 app.use("/api/v1/health-check",healthRouter)
 
+// ======================================================================================
+
+import tweetRouter from "./routes/tweet.route.js"
+
+app.use("/api/v1/tweet",tweetRouter)
+
 export {app}
